@@ -1,3 +1,6 @@
+/* Ref: https://youtu.be/Y4MKS3gJQ9Q
+ *  Ref: https://gobyexample.com/structs
+ */
 package main
 
 import "fmt"
@@ -30,4 +33,16 @@ func main() {
 
 	usuario3 := usuario{nome: "Leandro Magalhães"}
 	fmt.Println(usuario3)
+
+	// Structs anônimo
+
+	structAnonimo := struct {
+		nome  string
+		idade uint8
+	}{
+		nome:  "Leandro Alves",
+		idade: 23,
+	}
+
+	fmt.Print("Struct Anônimo: \n", structAnonimo)
 }
