@@ -1,4 +1,5 @@
 // Ref: https://www.sohamkamani.com/golang/json/
+// Ref: https://bitfieldconsulting.com/golang/map-string-interface
 package main
 
 import (
@@ -8,8 +9,7 @@ import (
 )
 
 type Test struct {
-	Name string
-	// Ref: https://bitfieldconsulting.com/golang/map-string-interface
+	Name    string
 	Outputs map[string]interface{}
 }
 
