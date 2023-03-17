@@ -1,4 +1,4 @@
-package avancado
+package formas
 
 import (
 	"math"
