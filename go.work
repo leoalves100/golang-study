@@ -1,0 +1,10 @@
+go 1.19
+
+use (
+	./banco-de-dados
+	./cmd
+	./crud
+	./pacotes
+	./testes/avancado
+	./testes/introducao
+)
