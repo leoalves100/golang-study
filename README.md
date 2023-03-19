@@ -1,22 +1,22 @@
 # golang-study
 
-# Executando
+## Executando
 
 1. Install [asdf](https://asdf-vm.com/guide/getting-started.html#_3-install-asdf)
 
-
 2. Adicionar plugin **golang**
+
 ```bash
 asdf plugin-add golang https://github.com/kennyp/asdf-golang.git
 ```
 
-3. Instalar **golang**
+1. Instalar **golang**
 
 ```bash
 asdf install
 ```
 
-# Commands
+## Commands
 
 ## go mod
 
@@ -25,6 +25,7 @@ asdf install
 ```bash
 go mod init <name-module>
 ```
+
 &nbsp;
 
 ## go test
@@ -52,7 +53,7 @@ go test ./...
 // Adicionar no início de cado função do teste
 
 func TestParapelo(t *testing.T) {
-	t.Parallel()
+    t.Parallel()
 
     return "true"
 }
@@ -68,4 +69,4 @@ go tool cover --func=<nome-file>.txt
 
 # Gerando html
 go tool cover --html=<nome-file>.txt
-``
+```
