@@ -48,7 +48,12 @@ func CreateUsers(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response.JSON(w, http.StatusCreated, user)
+	response.JSON(w, http.StatusCreated, &model.User{
+		ID:   user.ID,
+		Name: user.Name,
+		Nick: user.Nick,
+		Mail: user.Mail,
+	})
 
 }
 
@@ -56,10 +61,10 @@ func CreateUsers(w http.ResponseWriter, r *http.Request) {
 func SearchUsers(w http.ResponseWriter, r *http.Request) {
 	// we use the "user" to perform the search in the URL. (Ex: /usuarios?user=name.user)
 	nameORNick := strings.ToLower(r.URL.Query().Get("user"))
-	if nameORNick == "" {
-		response.Erro(w, http.StatusBadRequest, errors.New("search parameter not informed"))
-		return
-	}
+	// if nameORNick == "" {
+	// 	response.Erro(w, http.StatusBadRequest, errors.New("search parameter not informed"))
+	// 	return
+	// }
 
 	db, err := database.Connection()
 	if err != nil {

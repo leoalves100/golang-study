@@ -1,6 +1,7 @@
 package model
 
 import (
+	"api/src/sec"
 	"errors"
 	"fmt"
 	"strings"
@@ -24,7 +25,9 @@ func (user *User) Prepare(stage string) error {
 		return err
 	}
 
-	user.format()
+	if err := user.format(stage); err != nil {
+		return err
+	}
 
 	return nil
 }
@@ -54,8 +57,19 @@ func (user *User) valid(stage string) error {
 	return nil
 }
 
-func (user *User) format() {
+func (user *User) format(stage string) error {
 	user.Name = strings.TrimSpace(user.Name)
 	user.Nick = strings.TrimSpace(user.Nick)
 	user.Mail = strings.TrimSpace(user.Mail)
+
+	if stage == "register" {
+		passwordHash, err := sec.Hash(user.Password)
+		if err != nil {
+			return err
+		}
+
+		user.Password = string(passwordHash)
+	}
+
+	return nil
 }

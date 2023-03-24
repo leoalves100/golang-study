@@ -23,7 +23,7 @@ var migrations = []migrator.Migration{
 			users.Varchar("name", 50)
 			users.Varchar("nick", 50)
 			users.Varchar("mail", 50)
-			users.Varchar("password", 20)
+			users.Varchar("password", 100)
 			users.Unique("nick", "mail")
 			users.Timestamps()
 
