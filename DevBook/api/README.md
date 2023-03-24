@@ -10,3 +10,4 @@
 ## Util
 
 1. [REST API Tutorial](https://restfulapi.net/)
+2. [Status Code HTTP](https://developer.mozilla.org/en-US/docs/Web/HTTP/Status)
