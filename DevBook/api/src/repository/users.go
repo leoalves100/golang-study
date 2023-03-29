@@ -100,6 +100,29 @@ func (repository User) SearchUser(ID uint64) (model.User, error) {
 	return user, nil
 }
 
+// SearchUser Search 1 user specific mail in the database
+func (repository User) SearchUserMail(Mail string) (model.User, error) {
+	lines, err := repository.db.Query(
+		"select mail, password from usuarios where mail = ?", Mail,
+	)
+
+	if err != nil {
+		return model.User{}, err
+	}
+
+	defer lines.Close()
+
+	var user model.User
+
+	if lines.Next() {
+		if err = lines.Scan(&user.Mail, &user.Password); err != nil {
+			return model.User{}, err
+		}
+	}
+
+	return user, nil
+}
+
 // UpdateUser update a specific user in the database
 func (repository User) UpdateUser(ID uint64, user model.User) error {
 	stat, err := repository.db.Prepare(

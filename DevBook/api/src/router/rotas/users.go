@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-var rotasUsuarios = []Routes{
+var routesUser = []Routes{
 	{
 		URI:            "/usuarios",
 		Method:         http.MethodPost,
