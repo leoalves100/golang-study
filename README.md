@@ -1,5 +1,9 @@
 # golang-study
 
+## Util
+
+- [Go Concurrency Patterns](https://www.youtube.com/watch?v=f6kdp27TYZs)
+
 ## Executando
 
 1. Install [asdf](https://asdf-vm.com/guide/getting-started.html#_3-install-asdf)
