@@ -12,6 +12,7 @@ import (
 var (
 	StringConectionDB = ""
 	ExecutionPortAPI  = 0
+	SecretKey         []byte
 )
 
 // LoadingConfigs initialization vars configs
@@ -33,4 +34,6 @@ func LoadingConfigs() {
 		os.Getenv("DB_PASSWORD"),
 		os.Getenv("DB_NAME"),
 	)
+
+	SecretKey = []byte(os.Getenv("SECRET_KEY"))
 }
