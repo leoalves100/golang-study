@@ -15,7 +15,7 @@ var rootCmd = &cobra.Command{
 
 func Execute() {
 
-	rootCmd.AddCommand(Server(), migrate.Migration(), migrate.Revert())
+	rootCmd.AddCommand(Server(), migrate.Migration(), migrate.Revert(), GenBase64())
 
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Fprint(os.Stderr, err.Error())
