@@ -9,7 +9,7 @@ import (
 	"github.com/badoux/checkmail"
 )
 
-// User Representa um usuário
+// User Represents a user
 type User struct {
 	ID        uint64 `json:"id,omitempty"`
 	Name      string `json:"name,omitempty"`
