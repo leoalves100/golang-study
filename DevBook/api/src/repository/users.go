@@ -103,7 +103,7 @@ func (repository User) SearchUser(ID uint64) (model.User, error) {
 // SearchUser Search 1 user specific mail in the database
 func (repository User) SearchUserMail(Mail string) (model.User, error) {
 	lines, err := repository.db.Query(
-		"select mail, password from usuarios where mail = ?", Mail,
+		"select id, mail, password from usuarios where mail = ?", Mail,
 	)
 
 	if err != nil {
@@ -115,7 +115,7 @@ func (repository User) SearchUserMail(Mail string) (model.User, error) {
 	var user model.User
 
 	if lines.Next() {
-		if err = lines.Scan(&user.Mail, &user.Password); err != nil {
+		if err = lines.Scan(&user.ID, &user.Mail, &user.Password); err != nil {
 			return model.User{}, err
 		}
 	}

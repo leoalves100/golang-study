@@ -1,12 +1,14 @@
 package controllers
 
 import (
+	"api/src/authentication"
 	"api/src/database"
 	"api/src/model"
 	"api/src/repository"
 	"api/src/response"
 	"encoding/json"
 	"errors"
+	"fmt"
 	"io"
 	"net/http"
 	"strconv"
@@ -130,6 +132,20 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	userID, err := strconv.ParseUint(param["id"], 10, 64)
 	if err != nil {
 		response.Erro(w, http.StatusBadRequest, err)
+		return
+	}
+
+	userIDToken, err := authentication.ExtractUserID(r)
+	if err != nil {
+		response.Erro(w, http.StatusUnauthorized, err)
+		return
+	}
+
+	fmt.Println(userID)
+	fmt.Println(userIDToken)
+
+	if userID != userIDToken {
+		response.Erro(w, http.StatusForbidden, errors.New("You don't have permission to update this user"))
 		return
 	}
 

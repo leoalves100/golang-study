@@ -7,6 +7,10 @@
 3. [godotenv](https://github.com/joho/godotenv) # Variable environment
 4. [mysql-driver](https://github.com/go-sql-driver/mysql) # Driver MySQL
 
+```bash
+go install github.com/go-delve/delve/cmd/dlv
+```
+
 ## Util
 
 1. [REST API Tutorial](https://restfulapi.net/)

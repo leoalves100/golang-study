@@ -1,12 +1,14 @@
 package controllers
 
 import (
+	"api/src/authentication"
 	"api/src/database"
 	"api/src/model"
 	"api/src/repository"
 	"api/src/response"
 	"api/src/sec"
 	"encoding/json"
+	"errors"
 	"io"
 	"net/http"
 )
@@ -35,6 +37,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	userAndMailSaved, err := repository.SearchUserMail(user.Mail)
 	if err != nil {
 		response.Erro(w, http.StatusInternalServerError, err)
+		return
 	}
 
 	if err := sec.CheckPassword(userAndMailSaved.Password, user.Password); err != nil {
@@ -42,6 +45,11 @@ func Login(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	w.Write([]byte("Logou porra"))
+	token, err := authentication.CriateToken(userAndMailSaved.ID)
+	if err != nil {
+		response.Erro(w, http.StatusBadRequest, errors.New("Failed to generate token"))
+		return
+	}
 
+	w.Write([]byte(token))
 }
