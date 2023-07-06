@@ -8,7 +8,6 @@ import (
 	"api/src/response"
 	"encoding/json"
 	"errors"
-	"fmt"
 	"io"
 	"net/http"
 	"strconv"
@@ -140,9 +139,6 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 		response.Erro(w, http.StatusUnauthorized, err)
 		return
 	}
-
-	fmt.Println(userID)
-	fmt.Println(userIDToken)
 
 	if userID != userIDToken {
 		response.Erro(w, http.StatusForbidden, errors.New("You don't have permission to update this user"))
