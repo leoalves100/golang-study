@@ -34,7 +34,11 @@ var migrations = []migrator.Migration{
 		Down: func() migrator.Schema {
 			var s migrator.Schema
 
-			s.DropTableIfExists("usuarios")
+			s.DropTableIfExists("users")
+
+			return s
+		},
+	},
 
 			return s
 		},
