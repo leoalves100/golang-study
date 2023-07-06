@@ -17,7 +17,7 @@ func NewRepositoryUser(db *sql.DB) *User {
 // CreateUsers Create a user in the database
 func (repository User) CreateUsers(user model.User) (uint64, error) {
 	// Creates a statement to be executed
-	statment, err := repository.db.Prepare("insert into usuarios (name, nick, mail, password) values (?, ?, ?, ?)")
+	statment, err := repository.db.Prepare("insert into users (name, nick, mail, password) values (?, ?, ?, ?)")
 	if err != nil {
 		return 0, err
 	}
@@ -45,7 +45,7 @@ func (repository User) SearchUsers(nameORnick string) ([]model.User, error) {
 	nameORnick = fmt.Sprintf("%%%s%%", nameORnick)
 
 	lines, err := repository.db.Query(
-		"select id, name, nick, mail from usuarios "+
+		"select id, name, nick, mail from users "+
 			"where name LIKE ? or nick LIKE ?", nameORnick, nameORnick,
 	)
 
@@ -73,7 +73,7 @@ func (repository User) SearchUsers(nameORnick string) ([]model.User, error) {
 // SearchUser Search 1 user in the database, based on nike or name
 func (repository User) SearchUser(ID uint64) (model.User, error) {
 	lines, err := repository.db.Query(
-		"select id, name, nick, mail, created_at, updated_at from usuarios where id = ?", ID,
+		"select id, name, nick, mail, created_at, updated_at from users where id = ?", ID,
 	)
 
 	if err != nil {
@@ -103,7 +103,7 @@ func (repository User) SearchUser(ID uint64) (model.User, error) {
 // SearchUser Search 1 user specific mail in the database
 func (repository User) SearchUserMail(Mail string) (model.User, error) {
 	lines, err := repository.db.Query(
-		"select id, mail, password from usuarios where mail = ?", Mail,
+		"select id, mail, password from users where mail = ?", Mail,
 	)
 
 	if err != nil {
@@ -126,7 +126,7 @@ func (repository User) SearchUserMail(Mail string) (model.User, error) {
 // UpdateUser update a specific user in the database
 func (repository User) UpdateUser(ID uint64, user model.User) error {
 	stat, err := repository.db.Prepare(
-		"update usuarios set name = ?, nick = ?, mail = ? where id = ?",
+		"update users set name = ?, nick = ?, mail = ? where id = ?",
 	)
 	if err != nil {
 		return err
@@ -143,7 +143,7 @@ func (repository User) UpdateUser(ID uint64, user model.User) error {
 
 // DeleteUser delete a specific user in the database
 func (repository User) DeleteUser(ID uint64) error {
-	stat, err := repository.db.Prepare("delete from usuarios where id = ?")
+	stat, err := repository.db.Prepare("delete from users where id = ?")
 	if err != nil {
 		return err
 	}
