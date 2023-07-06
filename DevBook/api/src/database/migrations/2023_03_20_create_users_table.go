@@ -15,7 +15,7 @@ var migrations = []migrator.Migration{
 		Up: func() migrator.Schema {
 			var s migrator.Schema
 			users := migrator.Table{
-				Name:   "usuarios",
+				Name:   "users",
 				Engine: "INNODB",
 			}
 
