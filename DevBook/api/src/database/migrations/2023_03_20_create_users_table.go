@@ -39,6 +39,32 @@ var migrations = []migrator.Migration{
 			return s
 		},
 	},
+	{
+		Name: "2023_06_07_create_followers_table",
+		Up: func() migrator.Schema {
+			var s migrator.Schema
+			followers := migrator.Table{
+				Name:   "followers",
+				Engine: "INNODB",
+			}
+
+			followers.BigInt("user_id", 1, true)
+			followers.BigInt("followers_id", 1, true)
+			followers.Timestamps()
+
+			followers.Primary("user_id", "followers_id")
+			followers.Foreign("user_id", "id", "users", "", "CASCADE")
+			followers.Foreign("followers_id", "id", "users", "", "CASCADE")
+
+			s.CreateTable(followers)
+
+			return s
+		},
+		Down: func() migrator.Schema {
+			var s migrator.Schema
+
+			s.DropTableIfExists("followers")
+			s.DropTableIfExists("users")
 
 			return s
 		},
