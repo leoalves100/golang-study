@@ -155,5 +155,24 @@ func (repository User) DeleteUser(ID uint64) error {
 	}
 
 	return nil
+}
 
+// Follow is a function that allows a user to follow another user.
+//
+// It takes two parameters, userID and followID, both of type uint64.
+// It returns an error if there was an issue while following the user.
+// Ref: https://www.mysqltutorial.org/mysql-insert-ignore/
+func (repository User) Follow(userID, followID uint64) error {
+	statement, err := repository.db.Prepare("insert ignore into followers (user_id, followers_id) values (?, ?)")
+
+	if err != nil {
+		return err
+	}
+	defer statement.Close()
+
+	if _, err = statement.Exec(userID, followID); err != nil {
+		return err
+	}
+
+	return nil
 }
