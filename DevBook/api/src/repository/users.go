@@ -185,10 +185,44 @@ func (repository User) UnFollow(userID, followID uint64) error {
 	if err != nil {
 		return err
 	}
+	defer statement.Close()
 
 	if _, err = statement.Exec(userID, followID); err != nil {
 		return err
 	}
 
 	return nil
+}
+
+func (repository User) SearchFollowers(userID uint64) ([]model.User, error) {
+	statement, err := repository.db.Query(`
+		select u.id, u.name, u.nick, u.mail, u.created_at from users u 
+		inner join followers s on u.id = s.followers_id
+		where s.user_id = ?
+	`, userID)
+
+	if err != nil {
+		return nil, err
+	}
+	defer statement.Close()
+
+	var users []model.User
+
+	for statement.Next() {
+		var user model.User
+
+		if err = statement.Scan(
+			&user.ID,
+			&user.Name,
+			&user.Nick,
+			&user.Mail,
+			&user.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+
+		users = append(users, user)
+	}
+
+	return users, nil
 }
