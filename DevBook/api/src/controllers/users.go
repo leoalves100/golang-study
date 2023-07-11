@@ -220,14 +220,14 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 
 // FollowUser follow specific user
 func FollowUser(w http.ResponseWriter, r *http.Request) {
-	followID, err := authentication.ExtractUserID(r)
+	userID, err := authentication.ExtractUserID(r)
 	if err != nil {
 		response.Erro(w, http.StatusUnauthorized, err)
 		return
 	}
 
 	params := mux.Vars(r)
-	userID, err := strconv.ParseUint(params["userID"], 10, 64)
+	followID, err := strconv.ParseUint(params["userID"], 10, 64)
 	if err != nil {
 		response.Erro(w, http.StatusBadRequest, err)
 		return
@@ -258,14 +258,14 @@ func FollowUser(w http.ResponseWriter, r *http.Request) {
 
 // UnFollowUser unfollow specific user
 func UnFollowUser(w http.ResponseWriter, r *http.Request) {
-	followID, err := authentication.ExtractUserID(r)
+	userID, err := authentication.ExtractUserID(r)
 	if err != nil {
 		response.Erro(w, http.StatusUnauthorized, err)
 		return
 	}
 
 	param := mux.Vars(r)
-	userID, err := strconv.ParseUint(param["userID"], 10, 64)
+	followID, err := strconv.ParseUint(param["userID"], 10, 64)
 	if err != nil {
 		response.Erro(w, http.StatusBadRequest, err)
 		return
