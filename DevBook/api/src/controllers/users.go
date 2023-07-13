@@ -6,6 +6,7 @@ import (
 	"api/src/model"
 	"api/src/repository"
 	"api/src/response"
+	"api/src/sec"
 	"encoding/json"
 	"errors"
 	"io"
@@ -330,6 +331,7 @@ func SearchFollowing(w http.ResponseWriter, r *http.Request) {
 		response.Erro(w, http.StatusInternalServerError, err)
 		return
 	}
+	defer db.Close()
 
 	repository := repository.NewRepositoryUser(db)
 	users, err := repository.SearchFollowing(userID)
@@ -344,4 +346,69 @@ func SearchFollowing(w http.ResponseWriter, r *http.Request) {
 	}
 
 	response.JSON(w, http.StatusOK, users)
+}
+
+// UpdatePassword change a specific user password
+func UpdatePassword(w http.ResponseWriter, r *http.Request) {
+	userIDToken, err := authentication.ExtractUserID(r)
+	if err != nil {
+		response.Erro(w, http.StatusUnauthorized, err)
+		return
+	}
+
+	param := mux.Vars(r)
+	userID, err := strconv.ParseUint(param["userID"], 10, 64)
+	if err != nil {
+		response.Erro(w, http.StatusBadRequest, err)
+		return
+	}
+
+	if userIDToken != userID {
+		response.Erro(w, http.StatusForbidden, errors.New("it is not allowed to update the password of a user other than your own"))
+		return
+	}
+
+	bodyRequest, err := io.ReadAll(r.Body)
+	if err != nil {
+		response.Erro(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	var password model.Password
+	if err = json.Unmarshal(bodyRequest, &password); err != nil {
+		response.Erro(w, http.StatusBadRequest, err)
+		return
+	}
+
+	db, err := database.Connection()
+	if err != nil {
+		response.Erro(w, http.StatusInternalServerError, err)
+		return
+	}
+	defer db.Close()
+
+	repository := repository.NewRepositoryUser(db)
+	passwordSavedDatabase, err := repository.SearchPassword(userID)
+	if err != nil {
+		response.Erro(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	if err = sec.CheckPassword(passwordSavedDatabase, password.Current); err != nil {
+		response.Erro(w, http.StatusUnauthorized, errors.New("invalid password"))
+		return
+	}
+
+	passwordHash, err := sec.Hash(password.New)
+	if err != nil {
+		response.Erro(w, http.StatusBadGateway, err)
+		return
+	}
+
+	if err = repository.UpdatePassword(userID, string(passwordHash)); err != nil {
+		response.Erro(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	response.JSON(w, http.StatusNoContent, nil)
 }

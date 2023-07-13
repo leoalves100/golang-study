@@ -259,3 +259,39 @@ func (repository User) SearchFollowing(userID uint64) ([]model.User, error) {
 
 	return users, nil
 }
+
+// SearchPassword Returns the user password by user_id
+func (repository User) SearchPassword(userID uint64) (string, error) {
+	query, err := repository.db.Query(`
+		select password from users where id = ?
+	`, userID)
+	if err != nil {
+		return "", err
+	}
+	defer query.Close()
+
+	var user model.User
+
+	if query.Next() {
+		if err = query.Scan(&user.Password); err != nil {
+			return "", err
+		}
+	}
+
+	return user.Password, nil
+}
+
+// UpdatePassword Update a specific user password
+func (repository User) UpdatePassword(userID uint64, password string) error {
+	statement, err := repository.db.Prepare("update users set password = ? where id = ?")
+	if err != nil {
+		return err
+	}
+	defer statement.Close()
+
+	if _, err = statement.Exec(password, userID); err != nil {
+		return err
+	}
+
+	return nil
+}
