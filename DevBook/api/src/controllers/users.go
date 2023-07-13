@@ -315,3 +315,33 @@ func SearchFollowers(w http.ResponseWriter, r *http.Request) {
 
 	response.JSON(w, http.StatusOK, followers)
 }
+
+// SearchFollowing Get all following of a specific user
+func SearchFollowing(w http.ResponseWriter, r *http.Request) {
+	param := mux.Vars(r)
+	userID, err := strconv.ParseUint(param["userID"], 10, 64)
+	if err != nil {
+		response.Erro(w, http.StatusBadRequest, err)
+		return
+	}
+
+	db, err := database.Connection()
+	if err != nil {
+		response.Erro(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	repository := repository.NewRepositoryUser(db)
+	users, err := repository.SearchFollowing(userID)
+	if err != nil {
+		response.Erro(w, http.StatusInternalServerError, err)
+		return
+	}
+
+	if len(users) < 1 {
+		response.JSON(w, http.StatusNoContent, nil)
+		return
+	}
+
+	response.JSON(w, http.StatusOK, users)
+}
