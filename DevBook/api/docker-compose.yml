@@ -15,9 +15,3 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: golang
       MYSQL_DATABASE: devbook
-
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
