@@ -14,12 +14,14 @@ type Routes struct {
 	Authentication bool
 }
 
-// Configurar Adicionar todas as rotas dentro do router
+// Configurar Add all routes inside the router
 func Configurar(r *mux.Router) *mux.Router {
 	routes := routesUser
 	routes = append(routes, routeLogin)
+	routes = append(routes, routesPublications...)
 
 	for _, route := range routes {
+
 		if route.Authentication {
 			r.HandleFunc(route.URI,
 				middlewares.Logger(middlewares.Authentication(route.Func)),
