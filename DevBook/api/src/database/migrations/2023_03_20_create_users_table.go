@@ -25,6 +25,7 @@ var migrations = []migrator.Migration{
 			users.Varchar("mail", 50)
 			users.Varchar("password", 100)
 			users.Unique("nick", "mail")
+
 			users.Timestamps()
 
 			s.CreateTable(users)
@@ -50,6 +51,7 @@ var migrations = []migrator.Migration{
 
 			followers.BigInt("user_id", 1, true)
 			followers.BigInt("followers_id", 1, true)
+
 			followers.Timestamps()
 
 			followers.Primary("user_id", "followers_id")
@@ -63,6 +65,39 @@ var migrations = []migrator.Migration{
 		Down: func() migrator.Schema {
 			var s migrator.Schema
 
+			s.DropTableIfExists("followers")
+			s.DropTableIfExists("users")
+
+			return s
+		},
+	},
+	{
+		Name: "2023_07_13_create_publications_table",
+		Up: func() migrator.Schema {
+			var s migrator.Schema
+			publication := migrator.Table{
+				Name:   "publications",
+				Engine: "INNODB",
+			}
+
+			publication.BigInt("id", 1, true)
+			publication.BigInt("author_id", 1, true)
+			publication.Varchar("title", 100)
+			publication.Varchar("content", 300)
+			publication.BigInt("likes", 1, true)
+
+			publication.Timestamps()
+
+			publication.Foreign("author_id", "id", "users", "", "CASCADE")
+
+			s.CreateTable(publication)
+
+			return s
+		},
+		Down: func() migrator.Schema {
+			var s migrator.Schema
+
+			s.DropTableIfExists("publications")
 			s.DropTableIfExists("followers")
 			s.DropTableIfExists("users")
 
