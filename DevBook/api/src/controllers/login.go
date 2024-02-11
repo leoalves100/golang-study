@@ -47,7 +47,7 @@ func Login(w http.ResponseWriter, r *http.Request) {
 
 	token, err := authentication.CriateToken(userAndMailSaved.ID)
 	if err != nil {
-		response.Erro(w, http.StatusBadRequest, errors.New("Failed to generate token"))
+		response.Erro(w, http.StatusBadRequest, errors.New("failed to generate token"))
 		return
 	}
 

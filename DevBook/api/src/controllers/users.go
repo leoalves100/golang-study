@@ -142,7 +142,7 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if userID != userIDToken {
-		response.Erro(w, http.StatusForbidden, errors.New("You don't have permission to update this user"))
+		response.Erro(w, http.StatusForbidden, errors.New("you don't have permission to update this user"))
 		return
 	}
 
@@ -198,7 +198,7 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if userID != userIDToken {
-		response.Erro(w, http.StatusForbidden, errors.New("You don't have permission to delete this user"))
+		response.Erro(w, http.StatusForbidden, errors.New("you don't have permission to delete this user"))
 		return
 	}
 
@@ -236,7 +236,7 @@ func FollowUser(w http.ResponseWriter, r *http.Request) {
 
 	// A user cannot follow himself
 	if followID == userID {
-		response.Erro(w, http.StatusForbidden, errors.New("You cannot follow yourself"))
+		response.Erro(w, http.StatusForbidden, errors.New("you cannot follow yourself"))
 		return
 	}
 
@@ -273,7 +273,7 @@ func UnFollowUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if followID == userID {
-		response.Erro(w, http.StatusForbidden, errors.New("It is not possible to be follow yourself"))
+		response.Erro(w, http.StatusForbidden, errors.New("it is not possible to be follow yourself"))
 		return
 	}
 
