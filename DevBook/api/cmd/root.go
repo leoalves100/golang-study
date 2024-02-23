@@ -1,7 +1,6 @@
 package cmd
 
 import (
-	"api/cmd/migrate"
 	"fmt"
 	"os"
 
@@ -15,7 +14,7 @@ var rootCmd = &cobra.Command{
 
 func Execute() {
 
-	rootCmd.AddCommand(Server(), migrate.Migration(), migrate.Revert(), GenBase64())
+	rootCmd.AddCommand(Server(), GenBase64())
 
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Fprint(os.Stderr, err.Error())
