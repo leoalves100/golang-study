@@ -34,3 +34,36 @@ func (repository Publication) CreatePublication(publication model.Publication) (
 
 	return uint64(latestIDInsert), nil
 }
+
+func (repository Publication) SearchPublicationID(publicationID uint64) (model.Publication, error) {
+	line, err := repository.db.Query(`
+		select p.*, u.nick from
+		publications p inner join users u
+		on u.id = p.author_id where p.id = ?`,
+		publicationID)
+
+	if err != nil {
+		return model.Publication{}, err
+	}
+	defer line.Close()
+
+	var publication model.Publication
+
+	if line.Next() {
+		if err = line.Scan(
+			&publication.ID,
+			&publication.AuthorID,
+			&publication.Title,
+			&publication.Content,
+			&publication.Likes,
+			&publication.CreatedAt,
+			&publication.UpdatedAt,
+			&publication.AuthorNick,
+		); err != nil {
+			return model.Publication{}, err
+		}
+	}
+
+	return publication, nil
+
+}
