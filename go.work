@@ -7,4 +7,5 @@ use (
 	./pacotes
 	./testes/avancado
 	./testes/introducao
+	./DevBook/api
 )
